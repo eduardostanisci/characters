@@ -19,18 +19,26 @@ function App() {
   }, [password])
 
   useEffect((): void => {
-    const encryptedPassword = encryptPassword(characters, password)
-    setEncrypt(encryptedPassword)
+    if (!password.length) {
+      return
+    }
+
+    const encrypted = encryptPassword(characters, password)
+    setEncrypt(encrypted)
   }, [encryptPassword, password])
 
-  const decryptPassword = useCallback((value: ICharacter[], encrypted: string): string => {
+  const decryptPassword = useCallback((value: ICharacter[]): string => {
     let auxIndex = 1
     let auxDecrypt = ''
     let index = 0
 
-    while (index < encrypt.length) {
-      const word = encrypted.substring(index, auxIndex)
+    while (index < encryptedPassword.length) {
+      const word = encryptedPassword.substring(index, auxIndex)
       const found = value.find((character: ICharacter) => character.crypto === word)
+
+      if (auxIndex > encryptedPassword.length) {
+        break
+      }
 
       if (!found) {
         auxIndex++
@@ -42,14 +50,14 @@ function App() {
     }
 
     return auxDecrypt
-  }, [encrypt])
+  }, [encryptedPassword])
 
   useEffect((): void => {
     if (!encryptedPassword.length) {
       return
     }
 
-    const decryptedPassword = decryptPassword(characters, encryptedPassword)
+    const decryptedPassword = decryptPassword(characters)
     setDecrypt(decryptedPassword)
   }, [decryptPassword, encryptedPassword])
 
