@@ -1,0 +1,21 @@
+.container {
+  border: 1px solid black;
+  width: 300px;
+  margin-bottom: 25px;
+  padding: 10px;
+}
+
+label:first-of-type {
+  font-weight: bold;
+}
+
+label:not(label:first-of-type) {
+  display: block;
+  font-size: 12pt;
+  margin: 15px 0;
+  word-wrap: break-word;
+}
+
+input {
+  display: block;
+}
