@@ -4,6 +4,7 @@ import { characters, ICharacter } from './characters';
 
 function App() {
   const [password, setPassword] = useState('')
+  const [encryptedPassword, setEncryptedPassword] = useState('')
   const [encrypt, setEncrypt] = useState('')
   const [decrypt, setDecrypt] = useState('')
 
@@ -44,20 +45,33 @@ function App() {
   }, [encrypt])
 
   useEffect((): void => {
-    const decryptedPassword = decryptPassword(characters, encrypt)
+    if (!encryptedPassword.length) {
+      return
+    }
+
+    const decryptedPassword = decryptPassword(characters, encryptedPassword)
     setDecrypt(decryptedPassword)
-  }, [decryptPassword, encrypt, encryptPassword])
+  }, [decryptPassword, encryptedPassword])
 
   const handlePassword = (event: ChangeEvent<HTMLInputElement>): void => {
     setPassword(event.target.value)
+  }
+
+  const handleEncryptedPassword = (event: ChangeEvent<HTMLInputElement>): void => {
+    setEncryptedPassword(event.target.value)
   }
 
   return (
     <>
       <div className="container">
         <label>Password</label>
-        <input type="text" value={password} onChange={handlePassword} data-testid="input-password"/>
+        <input type="text" value={password} onChange={handlePassword} data-testid="input-password" />
         <label>Crypto: {encrypt}</label>
+      </div>
+
+      <div className="container">
+        <label>Password encrypted</label>
+        <input type="text" value={encryptedPassword} onChange={handleEncryptedPassword} data-testid="input-encrypted-password" />
         <label>Decrypto: {decrypt}</label>
       </div>
     </>
